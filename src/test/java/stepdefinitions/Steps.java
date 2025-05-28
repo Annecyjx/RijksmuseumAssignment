@@ -8,12 +8,14 @@ import static org.junit.jupiter.api.Assertions.*;
 public class Steps {
 
     private Response response;
+    //private final String API_KEY = "YOUR_API_KEY"; // Replace with your actual key
+    private final String BASE_URL = "https://www.rijksmuseum.nl/api/en/collection";
 
-    @Given("the search API of Rijksmuseum API available")
+    @Given("the search API from Rijksmuseum available")
     public void apiIsAvailable() {
         response = given()
             .baseUri("https://www.rijksmuseum.nl/api/en/collection")
-            .queryParam("key", "?")
+           // .queryParam("key", API_KEY)
             .when()
             .get();
         assertEquals(200, response.statusCode(), "API is not available");
@@ -23,7 +25,7 @@ public class Steps {
     public void searchTypes(String type) {
         response = given()
             .baseUri("https://www.rijksmuseum.nl/api/en/collection")
-            .queryParam("key", "?")
+           // .queryParam("key", API_KEY)
             .queryParam("q", type)
             .when()
             .get();
