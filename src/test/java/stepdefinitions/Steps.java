@@ -51,36 +51,32 @@ public class Steps {
 
     @Then("the image URL should be accessible")
     public void validateImageUrl() {
-        response = given()
-            .queryParam("type", "painting")
-            .queryParam("material", "oil paint")
-            .when()
-            .get(BASE_URL);
+        assertEquals(200, response.getStatusCode());
+    List<Map<String, Object>> orderedItems = response.jsonPath().getList("orderedItems");
+    assertNotNull("orderedItems list is null", orderedItems);
+    assertTrue("orderedItems list is empty", orderedItems.size() > 0);
 
-        assertEquals("API did not return 200 OK", 200, response.getStatusCode());
+    String objectIdUrl = (String) orderedItems.get(0).get("id");
+    assertNotNull("Object ID URL is null", objectIdUrl);
 
-        List<Map<String, Object>> orderedItems = response.jsonPath().getList("orderedItems");
-        assertNotNull("orderedItems list is null", orderedItems);
-        assertTrue("orderedItems list is empty", orderedItems.size() > 0);
+    Response detailResponse = given()
+        .when()
+        .get(objectIdUrl);
 
-        String objectIdUrl = (String) orderedItems.get(0).get("id");
-        assertNotNull("Object ID URL is null", objectIdUrl);
+    assertEquals(200, detailResponse.getStatusCode());
 
-        Response detailResponse = given()
-            .when()
-            .get(objectIdUrl);
+    String imageUrl = detailResponse.jsonPath().getString("artObject.webImage.url");
+    assertNotNull("Image URL is null or missing", imageUrl);
 
-        assertEquals("Failed to get detail for object", 200, detailResponse.getStatusCode());
+    Response imageResponse = given()
+        .timeout(5000)
+        .when()
+        .get(imageUrl);
 
-        String imageUrl = detailResponse.jsonPath().getString("webImage.url");
-        assertNotNull("Image URL is null or missing", imageUrl);
-
-        Response imageResponse = given()
-            .when()
-            .get(imageUrl);
-
-        assertEquals(200, imageResponse.getStatusCode());
-        assertTrue(imageResponse.getHeader("Content-Type").startsWith("image/"));
+    assertEquals("Image URL not accessible", 200, imageResponse.getStatusCode());
+    String contentType = imageResponse.getHeader("Content-Type");
+    assertNotNull("Content-Type header is missing", contentType);
+    assertTrue("Content-Type is not an image", contentType.startsWith("image/"));
     }
 
 }
