@@ -15,6 +15,7 @@ public class Steps {
     @Given("the search API from Rijksmuseum is available")
     public void apiIsAvailable() {
         response = given()
+            .queryParam("format", "json") 
             .when()
             .get(BASE_URL);
         assertEquals("API is not available", 200, response.statusCode());
@@ -24,6 +25,7 @@ public class Steps {
     public void searchTypes(String type) {
         response = given()
             .queryParam("q", type)
+            .queryParam("format", "json")
             .when()
             .get(BASE_URL);
     }
