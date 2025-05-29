@@ -16,6 +16,7 @@ public class Steps {
     public void apiIsAvailable() {
         response = given()
             .queryParam("type", "painting")
+            .queryParam("material", "oil paint")
             .when()
             .get(BASE_URL);
         assertEquals("API is not available", 200, response.statusCode());
@@ -24,7 +25,7 @@ public class Steps {
     @When("I search for {string}")
     public void searchTypes(String type) {
         response = given()
-            .queryParam("type", "painting")
+            .queryParam("type", type)
             .when()
             .get(BASE_URL);
     }
