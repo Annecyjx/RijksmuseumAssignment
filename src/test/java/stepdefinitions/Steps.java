@@ -33,23 +33,38 @@ public class Steps {
     @Then("I should receive a successful response with a list of results")
     public void validateSearchResults() {
         assertEquals("API did not return 200 OK", 200, response.getStatusCode());
-        assertTrue("No artObjects found in response", response.getBody().asString().contains("artObjects"));
+
+        List<Map<String, Object>> orderedItems = response.jsonPath().getList("orderedItems");
+
+        assertNotNull("orderedItems list is null", orderedItems);
+        assertTrue("No orderedItems found in response", orderedItems.size() > 0);
     }
 
     @Then("I should receive a successful response with no results")
     public void validateNoResults() {
         assertEquals("API did not return 200 OK", 200, response.getStatusCode());
-        assertTrue("Expected no results but found some", response.asString().contains("\"artObjects\":[]"));
+
+        List<Map<String, Object>> orderedItems = response.jsonPath().getList("orderedItems");
+        assertNotNull("orderedItems list is null", orderedItems);
+        assertTrue("Expected no results but found some", orderedItems.isEmpty());
     }
 
     @Then("the image URL should be accessible")
     public void validateImageUrl() {
-        List<Map<String, Object>> artObjects = response.jsonPath().getList("artObjects");
+        List<Map<String, Object>> orderedItems = response.jsonPath().getList("orderedItems");
+        assertNotNull("orderedItems list is null", orderedItems);
+        assertTrue("orderedItems list is empty", orderedItems.size() > 0);
+        
+        String objectIdUrl = (String) orderedItems.get(0).get("id");
+        assertNotNull("Object ID URL is null", objectIdUrl);
 
-        assertNotNull("artObjects list is null", artObjects);
-        assertTrue("artObjects list is empty", artObjects.size() > 0);
+        Response detailResponse = given()
+            .when()
+            .get(objectIdUrl);
 
-        String imageUrl = response.jsonPath().getString("artObjects[0].webImage.url");
+        assertEquals("Failed to get detail for object", 200, detailResponse.getStatusCode());
+
+        String imageUrl = detailResponse.jsonPath().getString("webImage.url");
         assertNotNull("Image URL is null or missing", imageUrl);
 
         Response imageResponse = given()
