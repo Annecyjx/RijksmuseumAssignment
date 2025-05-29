@@ -41,6 +41,11 @@ public class Steps {
 
     @Then("the image URL should be accessible")
     public void validateImageUrl() {
+        List<Map<String, Object>> artObjects = response.jsonPath().getList("artObjects");
+
+        assertNotNull("artObjects list is null", artObjects);
+        assertTrue("artObjects list is empty", artObjects.size() > 0);
+
         String imageUrl = response.jsonPath().getString("artObjects[0].webImage.url");
         assertNotNull("Image URL is null or missing", imageUrl);
 
@@ -48,7 +53,8 @@ public class Steps {
             .when()
             .get(imageUrl);
 
-        assertEquals("Image is not accessible", 200, imageResponse.getStatusCode());
-        assertTrue("Response is not an image", imageResponse.getHeader("Content-Type").startsWith("image/"));
+        assertEquals(200, imageResponse.getStatusCode());
+        assertTrue(imageResponse.getHeader("Content-Type").startsWith("image/"));
     }
+
 }
