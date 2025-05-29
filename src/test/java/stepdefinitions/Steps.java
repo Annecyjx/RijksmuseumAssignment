@@ -2,8 +2,9 @@ package stepdefinitions;
 
 import io.cucumber.java.en.*;
 import io.restassured.response.Response;
+
 import static io.restassured.RestAssured.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
 public class Steps {
 
@@ -15,7 +16,7 @@ public class Steps {
         response = given()
             .when()
             .get(BASE_URL);
-        assertEquals(200, response.statusCode(), "API is not available");
+        assertEquals("API is not available", 200, response.statusCode());
     }
 
     @When("I search for {string}")
@@ -27,29 +28,27 @@ public class Steps {
     }
 
     @Then("I should receive a successful response with a list of results")
-     public void validateSearchResults() {
-        assertEquals(200, response.getStatusCode(), "API did not return 200 OK");
-        assertTrue(response.getBody().asString().contains("artObjects"), "No artObjects found in response");
+    public void validateSearchResults() {
+        assertEquals("API did not return 200 OK", 200, response.getStatusCode());
+        assertTrue("No artObjects found in response", response.getBody().asString().contains("artObjects"));
     }
-  
+
     @Then("I should receive a successful response with no results")
     public void validateNoResults() {
-        assertEquals(200, response.getStatusCode());
-        assertTrue(response.asString().contains("\"artObjects\":[]"));
+        assertEquals("API did not return 200 OK", 200, response.getStatusCode());
+        assertTrue("Expected no results but found some", response.asString().contains("\"artObjects\":[]"));
     }
-    
+
     @Then("the image URL should be accessible")
     public void validateImageUrl() {
         String imageUrl = response.jsonPath().getString("artObjects[0].webImage.url");
-
-       assertNotNull(imageUrl, "Image URL is null or missing");
+        assertNotNull("Image URL is null or missing", imageUrl);
 
         Response imageResponse = given()
             .when()
             .get(imageUrl);
 
-        assertEquals(200, imageResponse.getStatusCode(), "Image is not accessible");
-        assertTrue(imageResponse.getHeader("Content-Type").startsWith("image/"), "Response is not an image");
-}
-
+        assertEquals("Image is not accessible", 200, imageResponse.getStatusCode());
+        assertTrue("Response is not an image", imageResponse.getHeader("Content-Type").startsWith("image/"));
+    }
 }
