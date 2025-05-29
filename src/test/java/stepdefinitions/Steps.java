@@ -37,4 +37,19 @@ public class Steps {
         assertEquals(200, response.getStatusCode());
         assertTrue(response.asString().contains("\"artObjects\":[]"));
     }
+    
+    @Then("the image URL should be accessible")
+    public void validateImageUrl() {
+        String imageUrl = response.jsonPath().getString("artObjects[0].webImage.url");
+
+       assertNotNull(imageUrl, "Image URL is null or missing");
+
+        Response imageResponse = given()
+            .when()
+            .get(imageUrl);
+
+        assertEquals(200, imageResponse.getStatusCode(), "Image is not accessible");
+        assertTrue(imageResponse.getHeader("Content-Type").startsWith("image/"), "Response is not an image");
+}
+
 }
