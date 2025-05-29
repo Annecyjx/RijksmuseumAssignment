@@ -1,4 +1,4 @@
-Feature: Rijksmuseum collection search API validation
+Feature: Rijksmuseum collection API validations
 
 Scenario: Verify the search API to get results for searching "painting"
   Given the search API from Rijksmuseum is available
@@ -9,3 +9,8 @@ Scenario: Verify the search API to get no results for searching "aaaabbbb"
   Given the search API from Rijksmuseum is available
   When I search for "aaaabbbb"
   Then I should receive a successful response with no results
+
+Scenario: Verify accessibility of image
+  Given the search API from Rijksmuseum is available
+  When I search for "The Milkmaid"
+  Then the image URL should be accessible
