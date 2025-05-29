@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
 public class Steps {
 
     private Response response;
-    private final String BASE_URL = "https://www.rijksmuseum.nl/api/en/collection";
+    private final String BASE_URL = "https://data.rijksmuseum.nl/search/collection";
 
     @Given("the search API from Rijksmuseum is available")
     public void apiIsAvailable() {
