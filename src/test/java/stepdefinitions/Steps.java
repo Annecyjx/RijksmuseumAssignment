@@ -51,10 +51,18 @@ public class Steps {
 
     @Then("the image URL should be accessible")
     public void validateImageUrl() {
+        response = given()
+            .queryParam("type", "painting")
+            .queryParam("material", "oil paint")
+            .when()
+            .get(BASE_URL);
+
+        assertEquals("API did not return 200 OK", 200, response.getStatusCode());
+
         List<Map<String, Object>> orderedItems = response.jsonPath().getList("orderedItems");
         assertNotNull("orderedItems list is null", orderedItems);
         assertTrue("orderedItems list is empty", orderedItems.size() > 0);
-        
+
         String objectIdUrl = (String) orderedItems.get(0).get("id");
         assertNotNull("Object ID URL is null", objectIdUrl);
 
