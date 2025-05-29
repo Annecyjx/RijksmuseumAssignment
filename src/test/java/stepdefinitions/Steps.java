@@ -11,7 +11,7 @@ public class Steps {
     private Response response;
     private final String BASE_URL = "https://www.rijksmuseum.nl/api/en/collection";
 
-    @Given("the search API from Rijksmuseum available")
+    @Given("the search API from Rijksmuseum is available")
     public void apiIsAvailable() {
         response = given()
             .when()
