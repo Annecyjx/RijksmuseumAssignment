@@ -1,5 +1,5 @@
 # RijksmuseumAssignment
-Validating certain search functionalities via API's; Java; Selenium; Cucumber
+Validating certain search functionalities via API's; Java; Cucumber; REST Assured
 
 Way of thinking:
 1. Java coding standards
