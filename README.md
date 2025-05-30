@@ -6,7 +6,6 @@ mvn test
 
 # Refrences:
 Rijksmuseum Search API: https://data.rijksmuseum.nl/docs/search
-Rijksmuseum IIIF Image API: https://data.rijksmuseum.nl/docs/iiif/image
 
 # Way of thinking:
 1. Java coding standards
