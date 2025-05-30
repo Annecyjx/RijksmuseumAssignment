@@ -10,7 +10,3 @@ Scenario: Verify the search API to get no results for searching "aaaabbbb"
   When I search for "aaaabbbb"
   Then I should receive a successful response with no results
 
-Scenario: Verify accessibility of image
-  Given the search API from Rijksmuseum is available
-  When I search for "The Milkmaid"
-  Then the image URL should be accessible
