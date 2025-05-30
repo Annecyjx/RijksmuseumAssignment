@@ -69,7 +69,6 @@ public class Steps {
     assertNotNull("Image URL is null or missing", imageUrl);
 
     Response imageResponse = given()
-        .timeout(5000)
         .when()
         .get(imageUrl);
 
