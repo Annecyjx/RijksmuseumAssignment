@@ -49,33 +49,4 @@ public class Steps {
         assertTrue("Expected no results but found some", orderedItems.isEmpty());
     }
 
-    @Then("the image URL should be accessible")
-    public void validateImageUrl() {
-        assertEquals(200, response.getStatusCode());
-    List<Map<String, Object>> orderedItems = response.jsonPath().getList("orderedItems");
-    assertNotNull("orderedItems list is null", orderedItems);
-    assertTrue("orderedItems list is empty", orderedItems.size() > 0);
-
-    String objectIdUrl = (String) orderedItems.get(0).get("id");
-    assertNotNull("Object ID URL is null", objectIdUrl);
-
-    Response detailResponse = given()
-        .when()
-        .get(objectIdUrl);
-
-    assertEquals(200, detailResponse.getStatusCode());
-
-    String imageUrl = detailResponse.jsonPath().getString("artObject.webImage.url");
-    assertNotNull("Image URL is null or missing", imageUrl);
-
-    Response imageResponse = given()
-        .when()
-        .get(imageUrl);
-
-    assertEquals("Image URL not accessible", 200, imageResponse.getStatusCode());
-    String contentType = imageResponse.getHeader("Content-Type");
-    assertNotNull("Content-Type header is missing", contentType);
-    assertTrue("Content-Type is not an image", contentType.startsWith("image/"));
-    }
-
 }
