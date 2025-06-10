@@ -10,7 +10,7 @@ Rijksmuseum Search API: https://data.rijksmuseum.nl/docs/search
 # Way of thinking:
 1. Java coding standards
 2. Test Automation framework
-3. Clean code with proper abstraction layers
+3. Consider clean code
 4. Consider maintainability, easy to add new tests or adjust the exsiting tests
 5. Configuration and run in pipeline
 6. Documentation
