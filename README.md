@@ -5,6 +5,7 @@ Validating certain search functionalities via API's; Java; Cucumber; REST Assure
 mvn test
 
 # Refrences:
+Website: https://www.rijksmuseum.nl/en/collection
 Rijksmuseum Search API: https://data.rijksmuseum.nl/docs/search
 
 # Way of thinking:
